@@ -6,7 +6,37 @@ namespace Name
     {
         static void Main()
         {
-
+            Student[] studs = ReadData("input.txt");
+            Console.WriteLine("Choose student");
+            Console.WriteLine("1 - Illia \n2 - Olia");
+            int a;
+            do
+            {
+                a = Int32.Parse(Console.ReadLine());
+                switch (a)
+                {
+                    case 1:
+                        Console.WriteLine();
+                        foreach (Student s in studs)
+                        {
+                            Console.WriteLine(s);
+                        }
+                        Console.WriteLine("------------------------------------------------------------------------------------");
+                        runMenu_Illia(studs);
+                        break;
+                    case 2:
+                        Console.WriteLine();
+                        foreach (Student s in studs)
+                        {
+                            Console.WriteLine(s);
+                        }
+                        Console.WriteLine("------------------------------------------------------------------------------------");
+                        runMenu_Olia(studs);
+                        break;
+                    default: break;
+                }
+            }
+            while (a != 0);           
         }
         struct Student
         {
@@ -33,6 +63,10 @@ namespace Name
                 informaticsMark = Convert.ToChar(ReadyData[7]);
                 scholarship = Convert.ToInt32(ReadyData[8]);
             }
+            public override string ToString()
+            {
+                return $"{surName}\t{firstName}\t{patronymic} | {sex} {dateOfBirth} {mathematicsMark} {physicsMark} {informaticsMark} {scholarship}грн.";
+            }
         }
         static void runMenu_Illia(Student[] studs)
         {
@@ -52,6 +86,34 @@ namespace Name
                     }
                 }
             }
+        }
+        static void runMenu_Olia(Student[] studs)
+        {
+            DateTime today = DateTime.Today;
+            int count = 0;
+            bool[] do16rokiv = new bool[studs.Length];
+            for (int i = 0; i < studs.Length; i++)
+            {
+                string[] predatum = studs[i].dateOfBirth.Split(".");
+                DateTime datum = new DateTime(int.Parse(predatum[2]), int.Parse(predatum[1]), int.Parse(predatum[0]));
+                if (today.AddYears(-16) < datum)
+                {
+                    do16rokiv[i] = true;
+                    count++;
+                }
+            }
+            if(count != 0)
+            {
+                Console.WriteLine("Молодшi 16-ти " + count + " студентiв:");
+                for (int i = 0; i < do16rokiv.Length; i++)
+                {
+                    if (do16rokiv[i])
+                    {
+                        Console.WriteLine(studs[i]);
+                    }
+                }
+            }
+            else Console.WriteLine("Немає студентів молодше 16.");            
         }
         static Student[] ReadData(string fileName)
         {
