@@ -1,0 +1,75 @@
+using System;
+using System.IO;
+
+namespace taks
+{
+    class Program
+    {
+        struct Student
+        {
+            public string surName;
+            public string firstName;
+            public string patronymic;
+            public char sex;
+            public string dateOfBirth;
+            public char mathematicsMark;
+            public char physicsMark;
+            public char informaticsMark;
+            public int scholarship;
+
+            public Student(string lineWithAllData)
+            {
+                string[] data = lineWithAllData.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                surName = data[0];
+                firstName = data[1];
+                patronymic = data[2];
+                sex = Convert.ToChar(data[3]);
+                dateOfBirth = data[4];
+                mathematicsMark = Convert.ToChar(data[5]);
+                physicsMark = Convert.ToChar(data[6]);
+                informaticsMark = Convert.ToChar(data[7]);
+                scholarship = Convert.ToInt32(data[8]);
+            }
+            public override string ToString()
+            {
+                return $"{surName}\t{firstName}\t{patronymic}\t{sex} {dateOfBirth} {mathematicsMark} {physicsMark} {informaticsMark} {scholarship}грн.";
+            }
+        }
+        //
+        //
+        //МЕТОД:
+        //
+        //
+        static void WithDataTimeStruct(Student[] studs)
+        {
+            DateTime today = DateTime.Today;
+            int count = 0;
+            bool[] do16rokiv = new bool[studs.Length];
+            for (int i = 0; i < studs.Length; i++)
+            {
+                string[] predatum = studs[i].dateOfBirth.Split(".");
+                DateTime datum = new DateTime(int.Parse(predatum[2]), int.Parse(predatum[1]), int.Parse(predatum[0]));
+                if (today.AddYears(-16) < datum)
+                {
+                    do16rokiv[i] = true;
+                    count++;
+                }
+            }
+            Console.WriteLine("Молодшi 16-ти " + count + " студентiв:");
+            for (int i = 0; i < do16rokiv.Length; i++)
+            {
+                if (do16rokiv[i])
+                {
+                    Console.WriteLine(studs[i]);
+                }
+            }
+        }
+        static void Main(string[] args)
+        {
+            DateTime tod = DateTime.Today;
+            string[] today = tod.ToString("d").Split(".");
+            Console.WriteLine("Мiй метод:");
+           // WithDataTimeStruct(studs, tod);
+        }
+    }
+}
